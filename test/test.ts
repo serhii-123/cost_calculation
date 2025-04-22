@@ -48,9 +48,33 @@ describe("testing cost", () => {
 
         expect(result.cost).toBe(288.14);
     });
+
+    it('should return a 50 hrn cost', () => {
+        const result = getExecutionData('ukr', new Date(), 'something', 500);
+
+        expect(result.cost).toBe(50);
+    });
+
+    it('should return a 120 hrn cost', () => {
+        const result = getExecutionData('eng', new Date(), 'something', 500);
+
+        expect(result.cost).toBe(120);
+    });
 });
 
 describe('testing execution time', () => {
+    it('should return a 3597299 ms', () => {
+        const result = getExecutionData('ukr', new Date, 'docx', 1332);
+
+        expect(result.executionTime).toBe(3597299);
+    });
+
+    it('should return a 3589189 ms', () => {
+        const result = getExecutionData('eng', new Date, 'docx', 332);
+
+        expect(result.executionTime).toBe(3589189);
+    });
+
     it('should return a 3600000 ms', () => {
         const result = getExecutionData('ukr', new Date(), 'docx', 1333);
 
@@ -73,5 +97,17 @@ describe('testing execution time', () => {
         const result = getExecutionData('eng', new Date(), 'docx', 334);
 
         expect(result.executionTime).toBe(3610811);
+    });
+
+    it('should return a 6481620 ms', () => {
+        const result = getExecutionData('ukr', new Date(), 'something', 2000);
+
+        expect(result.executionTime).toBe(6481620);
+    });
+
+    it('should return a 25945946 ms', () => {
+        const result = getExecutionData('eng', new Date(), 'something', 2000);
+
+        expect(result.executionTime).toBe(25945946);
     });
 });
