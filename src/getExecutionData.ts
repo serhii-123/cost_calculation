@@ -1,4 +1,9 @@
 type languages = 'eng' | 'ukr';
+type ExecutionData = {
+    cost: number;
+    deadline: Date;
+    executionTime: number;
+}
 
 function getExecutionData(
     language: languages,
