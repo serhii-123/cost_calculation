@@ -33,6 +33,7 @@ function getCost(
 
     if(!allowedFormats.includes(fileFormat))
         cost = cost + ( cost / 100 * 20 );
+        cost = parseFloat(cost.toFixed(2));
 
     if(language == 'eng' && cost < 120)
         cost = 120
@@ -89,6 +90,8 @@ function getExecutionTime(language: languages, fileFormat: string, symbolsCount:
 
     if(!allowedFormats.includes(fileFormat))
         milliseconds = milliseconds + (milliseconds / 100 * 20);
+
+    milliseconds = Math.round(milliseconds);
 
     return milliseconds;
 }
