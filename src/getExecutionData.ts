@@ -10,7 +10,7 @@ function getExecutionData(
     startDate: Date,
     fileFormat: string,
     symbolsCount: number
-) {
+): ExecutionData {
     const cost: number = getCost(language, symbolsCount, fileFormat);
     const deadline: Date = getDeadline(language, startDate, fileFormat, symbolsCount);
     const executionTime: number = getExecutionTime(language, fileFormat, symbolsCount);
