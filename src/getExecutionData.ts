@@ -11,6 +11,8 @@ function getExecutionData(
     fileFormat: string,
     symbolsCount: number
 ): ExecutionData {
+    if(symbolsCount < 100 || symbolsCount > 100000) throw new Error('Invalid symbols count');
+
     const cost: number = getCost(language, symbolsCount, fileFormat);
     const deadline: Date = getDeadline(language, startDate, fileFormat, symbolsCount);
     const executionTime: number = getExecutionTime(language, fileFormat, symbolsCount);
@@ -53,9 +55,9 @@ function getDeadline(
     const hourInMs: number = 60 * 60 * 1000;
     const workdayInMs: number = 9 * 60 * 60 * 1000;
     let milliseconds: number = getExecutionTime(language, fileFormat, symbolsCount);
-    let deadline: Date = new Date(startDate);
-
-    deadline.setHours(9, 0, 0, 0);
+    let deadline: Date = new Date(startDate.getTime());
+    console.log(deadline.toLocaleString);
+    deadline.setUTCHours(7, 0, 0, 0);
     milliseconds += hourInMs / 2;
 
     if(milliseconds < hourInMs)
@@ -68,9 +70,9 @@ function getDeadline(
         let weekday = getWeekday(deadline);
 
         if(weekday === 'Friday')
-            deadline.setDate(deadline.getDate() + 3);
+            deadline.setUTCDate(deadline.getDate() + 3);
         else
-            deadline.setDate(deadline.getDate() + 1);
+            deadline.setUTCDate(deadline.getDate() + 1);
 
         milliseconds -= workdayInMs;
     }
