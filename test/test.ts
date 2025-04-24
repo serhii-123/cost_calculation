@@ -62,8 +62,8 @@ describe("testing cost", () => {
     });
 });
 
-describe('testing exception', () => {
-    it('should throw an exception due to small number of symbols', () => {
+describe('testing exception for symbols count', () => {
+    it('should throw an exception due to small symbols count', () => {
         expect(() => getExecutionData('eng', new Date(), 'docx', 99))
             .toThrowError('Invalid symbols count');
     });
@@ -125,17 +125,119 @@ describe('testing execution time', () => {
 });
 
 describe('testing deadline', () => {
-    it('should return the 11:00 time', () => {
+    it('should return the 11:30 time', () => {
         const date: Date = new Date('2025-04-28');
         const result = getExecutionData('ukr', date, 'docx', 1333);
 
-        expect(result.deadline.toLocaleString()).toBe('28.04.2025, 11:30:00');
+        expect(result.deadline.toLocaleString())
+            .toBe('28.04.2025, 11:30:00');
+    });
+
+    it('should return the 11:30 time', () => {
+        const date: Date = new Date('2025-04-28');
+        const result = getExecutionData('eng', date, 'docx', 333);
+
+        expect(result.deadline.toLocaleString())
+            .toBe('28.04.2025, 11:30:00');
+    });
+
+    it('should return the 11:42 time', () => {
+        const date: Date = new Date('2025-04-28');
+        const result = getExecutionData('ukr', date, 'something', 1333);
+
+        expect(result.deadline.toLocaleString())
+            .toBe('28.04.2025, 11:42:00');
+    });
+
+    it('should return the 11:42 time', () => {
+        const date: Date = new Date('2025-04-28');
+        const result = getExecutionData('eng', date, 'something', 333);
+        
+        expect(result.deadline.toLocaleString())
+            .toBe('28.04.2025, 11:42:00');
     });
 
     it('should return the 10:30 time at next day', () => {
         const date: Date = new Date('2025-04-28');
         const result = getExecutionData('ukr', date, 'docx', 13330);
 
-        expect(result.deadline.toLocaleString()).toBe('29.04.2025, 11:30:00');
+        expect(result.deadline.toLocaleString())
+            .toBe('29.04.2025, 11:30:00');
+    });
+
+    it('should return the 10:30 time at next day', () => {
+        const date: Date = new Date('2025-04-28');
+        const result = getExecutionData('eng', date, 'docx', 3330);
+
+        expect(result.deadline.toLocaleString())
+            .toBe('29.04.2025, 11:30:00');
+    });
+
+    it('should return the 10:30 time at monday', () => {
+        const symbolsCount: number = 1333 * 9 * 5;
+        const date = new Date('2025-04-21');
+        const result = getExecutionData('ukr', date, 'docx', symbolsCount);
+
+        expect(result.deadline.toLocaleString())
+            .toBe('28.04.2025, 10:30:00');
+    });
+
+    it('should return the 10:30 time at monday', () => {
+        const symbolsCount: number = 333 * 9 * 5;
+        const date = new Date('2025-04-21');
+        const result = getExecutionData('eng', date, 'docx', symbolsCount);
+
+        expect(result.deadline.toLocaleString())
+            .toBe('28.04.2025, 10:30:00');
+    });
+
+    it('should return the 11:30 time at monday', () => {
+        const date: Date = new Date('2025-04-25');
+        const result = getExecutionData('ukr', date, 'docx', 13330);
+
+        expect(result.deadline.toLocaleString())
+            .toBe('28.04.2025, 11:30:00');
+    });
+
+    it('should return the 11:30 time at monday', () => {
+        const date: Date = new Date('2025-04-25');
+        const result = getExecutionData('eng', date, 'docx', 3330);
+
+        expect(result.deadline.toLocaleString())
+            .toBe('28.04.2025, 11:30:00');
+    });
+
+    it('should return the _ time at tuesday', () => {
+        const symbolsCount = 1333 * 9 * 2;
+        const date: Date = new Date('2025-04-25');
+        const result = getExecutionData('ukr', date, 'something', symbolsCount);
+
+        expect(result.deadline.toLocaleString())
+            .toBe('29.04.2025, 14:06:00');
+    });
+
+    it('should return the _ time at tuesday', () => {
+        const symbolsCount = 333 * 9 * 2;
+        const date: Date = new Date('2025-04-25');
+        const result = getExecutionData('eng', date, 'something', symbolsCount);
+
+        expect(result.deadline.toLocaleString())
+            .toBe('29.04.2025, 14:06:00');
+    });
+});
+
+describe('testing exception for date', () => {
+    it('should throw an exception because of saturday', () => {
+        const date: Date = new Date('2025-04-26');
+
+        expect(() => getExecutionData('eng', date, 'docx', 1333))
+            .toThrowError('The start date must not be a weekend');
+    });
+
+    it('should throw an excepton because of sunday', () => {
+        const date: Date = new Date('2025-04-27');
+
+        expect(() => getExecutionData('ukr', date, 'docx', 1333))
+            .toThrowError('The start date must not be a weekend');
     });
 });
